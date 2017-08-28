@@ -38,7 +38,7 @@ public class Home {
 	private FileReader file;
 	ArrayList<Player> Current;
 	String curr;
-	int Lottery, c=-1, max;
+	int Lottery, c=-1, max, index;
 	boolean find;
 	RandomInteger random=new RandomInteger();
 	Player p;
@@ -248,7 +248,9 @@ public class Home {
 					btncompra.setVisible(false);
 				}
 				else{
-					if(c==-1){
+					max=Current.size();
+					if(c<0){
+						index=1;
 						find=false;
 						Lottery=random.getNum(Current.size());
 						String letter= Character.toString((char)Lottery);
@@ -263,18 +265,20 @@ public class Home {
 						}
 						p=Current.get(c);
 						System.out.println(Current.get(c).getNome());
-						Current.remove(c);
+						//Current.remove(c);
 					}
 					else{
-						if(c==max-1)
+						System.out.println(max);
+						if(c>=max-1)
 							c=0;
 						else
 							c++;
 						p=Current.get(c);
 						System.out.println(Current.get(c).getNome());
-						Current.remove(c);
+						//Current.remove(c);
+						index++;
 					}
-					displayresult.setText("Giocatore:  "+p.getNome()+"\nSquadra:  "+p.getTeam()+"\nGiocatori rimanenti nell'array: "+Current.size());
+					displayresult.setText("Giocatore:  "+p.getNome()+"\nSquadra:  "+p.getTeam()+"\nGiocatori nell'array: "+Current.size()+"\nGiocatori estratti: "+ index);
 					btnSvincola.setVisible(true);
 					btncompra.setVisible(true);
 				}
