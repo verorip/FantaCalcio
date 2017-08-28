@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import org.apache.poi.sl.usermodel.Sheet;
@@ -99,7 +101,11 @@ public class FileReader {
 	                 }
 	                 r++;
 	           }
-	        /* for(Player p : Difensori)
+	        sortD();
+	        sortA();
+	        sortC();
+	        sortP();
+	        /*for(Player p : Difensori)
 	        	 System.out.println("Difensori----> "+p.getNome()+"  della squadra "+p.getTeam().toString());*/
 	 }
 	 catch (Exception e) 
@@ -124,6 +130,35 @@ public class FileReader {
  	public ArrayList<Player> getDifensori(){
  		return Difensori;
  	}
+ 	public void sortD(){
+ 		Collections.sort(Difensori, new Comparator<Player>() {
+	 	    public int compare(Player p1, Player p2) {
+	 	        return p1.getNome().compareTo(p2.getNome());
+	 	    }
+	 	});
+ 	}
+ 	public void sortC(){
+ 		Collections.sort(Centrocampisti, new Comparator<Player>() {
+	 	    public int compare(Player p1, Player p2) {
+	 	        return p1.getNome().compareTo(p2.getNome());
+	 	    }
+	 	});
+ 	}
+ 	public void sortA(){
+ 		Collections.sort(Attaccanti, new Comparator<Player>() {
+	 	    public int compare(Player p1, Player p2) {
+	 	        return p1.getNome().compareTo(p2.getNome());
+	 	    }
+	 	});
+ 	}
+ 	public void sortP(){
+ 		Collections.sort(Portieri, new Comparator<Player>() {
+	 	    public int compare(Player p1, Player p2) {
+	 	        return p1.getNome().compareTo(p2.getNome());
+	 	    }
+	 	});
+ 	}
+	 	
  	/*public void setA(ArrayList<Player> A){
  		this.Attaccanti=A;
  	}

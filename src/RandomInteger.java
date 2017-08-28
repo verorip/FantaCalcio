@@ -6,7 +6,7 @@ public final class RandomInteger {
   public int getNum(int size){
     //note a single Random object is reused here
     Random randomGenerator = new Random();
-    int randomInt = randomGenerator.nextInt(size);
+    int randomInt = randomGenerator.nextInt(26)+(byte)'a';
 	return randomInt;
   }
 }

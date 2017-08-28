@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 import javax.swing.JToolBar;
 import javax.swing.JTextArea;
@@ -37,7 +38,8 @@ public class Home {
 	private FileReader file;
 	ArrayList<Player> Current;
 	String curr;
-	int Lottery;
+	int Lottery, c=-1, max;
+	boolean find;
 	RandomInteger random=new RandomInteger();
 	Player p;
 	Vendor v;
@@ -191,7 +193,9 @@ public class Home {
 		});
 		btnAttaccanti.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				c=-1;
 				Current=file.getAttaccanti();
+				max=Current.size();
 				curr="A";
 				btnAttaccanti.setBackground(new Color(0, 0, 0));
 				btnPortieri.setBackground(new Color(240, 240, 240));
@@ -201,7 +205,9 @@ public class Home {
 		});
 		btnPortieri.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				c=-1;
 				Current=file.getPortieri();
+				max=Current.size();
 				curr="P";
 				btnPortieri.setBackground(new Color(0, 0, 0));
 				btnAttaccanti.setBackground(new Color(240, 240, 240));
@@ -211,7 +217,9 @@ public class Home {
 		});
 		btnCentrocamp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				c=-1;
 				Current=file.getCentrocampisti();
+				Current.size();
 				curr="C";
 				btnCentrocamp.setBackground(new Color(0, 0, 0));
 				btnAttaccanti.setBackground(new Color(240, 240, 240));
@@ -221,7 +229,9 @@ public class Home {
 		});
 		btnDifensori.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				c=-1;
 				Current=file.getDifensori();
+				Current.size();
 				curr="D";
 				btnDifensori.setBackground(new Color(0, 0, 0));
 				btnAttaccanti.setBackground(new Color(240, 240, 240));
@@ -238,9 +248,32 @@ public class Home {
 					btncompra.setVisible(false);
 				}
 				else{
-					Lottery=random.getNum(Current.size());
-					p=Current.get(Lottery);
-					Current.remove(Lottery);
+					if(c==-1){
+						find=false;
+						Lottery=random.getNum(Current.size());
+						String letter= Character.toString((char)Lottery);
+						System.out.println(letter);
+						for(int i=0;i<Current.size();i++)
+						{
+						    if(Current.get(i).getNome().startsWith(letter.toUpperCase()) && find==false)
+						    {
+						        c=i;
+						        find=true;
+						    }
+						}
+						p=Current.get(c);
+						System.out.println(Current.get(c).getNome());
+						Current.remove(c);
+					}
+					else{
+						if(c==max-1)
+							c=0;
+						else
+							c++;
+						p=Current.get(c);
+						System.out.println(Current.get(c).getNome());
+						Current.remove(c);
+					}
 					displayresult.setText("Giocatore:  "+p.getNome()+"\nSquadra:  "+p.getTeam()+"\nGiocatori rimanenti nell'array: "+Current.size());
 					btnSvincola.setVisible(true);
 					btncompra.setVisible(true);
@@ -263,7 +296,7 @@ public class Home {
 		btncompra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					new Vendor(p, curr);
+					new Vendor(p, curr); 
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
