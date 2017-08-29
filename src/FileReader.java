@@ -37,11 +37,12 @@ public class FileReader {
 		Centrocampisti= new ArrayList<>();
 	}
 
- public void fileread() throws IOException{	
+ public void fileread( String path) throws IOException{	
 	 try 
 	 {
+		 	
 	         // Get the workbook instance for XLSX file
-	         XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(new File("C:\\Users\\ricki\\workspace\\FantaCalcio\\Quotazioni_Fantacalcio_Ruoli_Fantagazzetta.xlsx")));
+	         XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(new File(path)));
 
 	         // Get first sheet from the workbook
 	         XSSFSheet sheet = wb.getSheetAt(0);

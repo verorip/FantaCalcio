@@ -38,11 +38,11 @@ public class Home {
 	private FileReader file;
 	ArrayList<Player> Current;
 	String curr;
-	int Lottery, c=-1, max, index;
-	boolean find;
+	int Lottery, c=-1, max, index, start;
+	boolean find, flag;
 	RandomInteger random=new RandomInteger();
 	Player p;
-	Vendor v;
+	String prova;
 	/**
 	 * Launch the application.
 	 */
@@ -59,19 +59,11 @@ public class Home {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 * @throws SQLException 
-	 */
 	public Home() throws SQLException {
 		Current= new ArrayList<>();
 		initialize();
 	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 * @throws SQLException 
-	 */
+	
 	private void initialize() throws SQLException {
 		db= new Sqlaccess();
 		file=new FileReader();
@@ -180,7 +172,8 @@ public class Home {
 		openfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					file.fileread();
+					prova=System.getProperty("user.dir") + "\\Quotazioni_Fantacalcio_Ruoli_Fantagazzetta.xlsx";
+					file.fileread(prova);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -219,7 +212,7 @@ public class Home {
 			public void actionPerformed(ActionEvent e) {
 				c=-1;
 				Current=file.getCentrocampisti();
-				Current.size();
+				max=Current.size();
 				curr="C";
 				btnCentrocamp.setBackground(new Color(0, 0, 0));
 				btnAttaccanti.setBackground(new Color(240, 240, 240));
@@ -231,7 +224,7 @@ public class Home {
 			public void actionPerformed(ActionEvent e) {
 				c=-1;
 				Current=file.getDifensori();
-				Current.size();
+				max=Current.size();
 				curr="D";
 				btnDifensori.setBackground(new Color(0, 0, 0));
 				btnAttaccanti.setBackground(new Color(240, 240, 240));
@@ -248,7 +241,6 @@ public class Home {
 					btncompra.setVisible(false);
 				}
 				else{
-					max=Current.size();
 					if(c<0){
 						index=1;
 						find=false;
@@ -278,9 +270,16 @@ public class Home {
 						//Current.remove(c);
 						index++;
 					}
-					displayresult.setText("Giocatore:  "+p.getNome()+"\nSquadra:  "+p.getTeam()+"\nGiocatori nell'array: "+Current.size()+"\nGiocatori estratti: "+ index);
-					btnSvincola.setVisible(true);
-					btncompra.setVisible(true);
+					if(index>max){
+						btnSvincola.setVisible(false);
+						btncompra.setVisible(false);
+						displayresult.setText("Lista sfogliata per intero");
+					}
+					else{
+						displayresult.setText("Giocatore:  "+p.getNome()+"\nSquadra:  "+p.getTeam()+"\nGiocatori nell'array: "+Current.size()+"\nGiocatori estratti: "+ index);
+						btnSvincola.setVisible(true);
+						btncompra.setVisible(true);
+					}
 				}
 			}
 		});
@@ -300,6 +299,7 @@ public class Home {
 		btncompra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					flag=false;
 					new Vendor(p, curr); 
 				} catch (SQLException e1) {
 					e1.printStackTrace();
